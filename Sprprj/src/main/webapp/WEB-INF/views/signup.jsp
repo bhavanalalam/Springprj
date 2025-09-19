@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        <%@page isELIgnored = "false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +15,7 @@
     Password: <input type="password" name="password" /><br/>
     <input type="submit" value="Signup"/>
 </form>
+<p>${msg}</p>
 <a href="login">Go to Login</a>
-
 </body>
 </html>

@@ -19,6 +19,12 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>6.2.3</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-core</artifactId>
+    <version>6.5.1</version>
+</dependency>
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 <dependency>
     <groupId>mysql</groupId>
@@ -46,11 +52,7 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-    	<groupId>com.example</groupId>
-    	<artifactId>Bookmyshow</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
+   
   </dependencies>
   <build>
     <finalName>Project</finalName>

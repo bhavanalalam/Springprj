@@ -1,4 +1,3 @@
-
 package com.example.dao;
 
 import java.sql.Connection;
@@ -7,12 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.example.dto.UserDTO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserDAOImpl implements UserDAO {
 
     private static final String URL = "jdbc:mysql://localhost:3306/userdb1";
-    private static final String USER = "root";   // change if needed
-    private static final String PASS = "root";   // change if needed
+    private static final String USER = "root";  
+    private static final String PASS = "root";  
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     static {
         try {
@@ -30,8 +31,8 @@ public class UserDAOImpl implements UserDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
-
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
+            ps.setString(3, hashedPassword);
             int rows = ps.executeUpdate();
             status = rows > 0;
         } catch (Exception e) {
@@ -44,18 +45,22 @@ public class UserDAOImpl implements UserDAO {
     public UserDTO loginUser(String email, String password) {
         UserDTO user = null;
         try (Connection con = DriverManager.getConnection(URL, USER, PASS)) {
-            String sql = "SELECT * FROM users WHERE email=? AND password=?";
+            String sql = "SELECT * FROM users WHERE email=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, email);
-            ps.setString(2, password);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user = new UserDTO();
-                user.setId(rs.getInt("id"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                String storedHash = rs.getString("password"); 
+
+           
+                if (passwordEncoder.matches(password, storedHash)) {
+                    user = new UserDTO();
+                    user.setId(rs.getInt("id"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                   
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

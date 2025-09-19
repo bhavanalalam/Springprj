@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class MyController {
     
     private UserDAO userDAO = new UserDAOImpl();
-    @GetMapping("/home")
-    public String show() {
-        return "home"; 
-    }
+ 
 
     @GetMapping("/signup")
     public String showSignupForm() {
@@ -34,10 +31,10 @@ public class MyController {
         boolean success = userDAO.registerUser(user);
 
         if (success) {
-            model.addAttribute("msg", "Registration successful!");
+            model.addAttribute("msg", "Registration successful");
             return "login";
         } else {
-            model.addAttribute("msg", "Registration failed!");
+            model.addAttribute("msg", " The User Already Exists");
             return "signup";
         }
     }
